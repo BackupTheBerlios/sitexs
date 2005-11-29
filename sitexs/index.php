@@ -1,6 +1,6 @@
 <?php
 session_start();
-$dr= "D:\\vhosts\\yarlson.net.ru\\mifs";
+$dr= getenv("DOCUMENT_ROOT");
 
 include $dr."/lib/db.conf.php";
 include $dr."/lib/mysql.class.php";
