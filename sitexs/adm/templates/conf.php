@@ -10,9 +10,9 @@ var i;
 <script language="JavaScript" src="we/protoedit.js"></script>
 <script language="JavaScript" src="we/wikiedit2.js"></script>
 <form action="?chid=$chid&action=append" method="post" name="FORMPOST">
-<p><a href="?chid=$chid&action=addParam">Добавить новый параметр</a></p>
+<p><a href="?chid=$chid&action=addParam"><?php echo __("Add new parameter") ?></a></p>
 <table width="100%" style="font-size: 100%;font-weight: bold;">
-$confItem
+<?php echo $confItem ?>
 </table>
-<p align="center"><input type="submit" value="Сохранить"></p>
+<p align="center"><input type="submit" value="<?php echo __("Save") ?>"></p>
 </form>
