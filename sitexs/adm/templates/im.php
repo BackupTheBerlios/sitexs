@@ -17,11 +17,11 @@ BODY, TABLE {
 </colgroup>
 
 <tr>
-	<td class="h">$lang[Name]</td>
-	<td class="h">$lang[Size]</td>
+	<td class="h"><? echo __("Name")?></td>
+	<td class="h"><? echo __("Size")?></td>
 </tr>
 <tbody bgcolor="white">
-$image_manager_tr
+<? echo $ref->image_manager_tr ?>
 </tbody>
 </table>
 
