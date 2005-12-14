@@ -1,6 +1,6 @@
 <?php
 session_start();
-$dr= getenv("DOCUMENT_ROOT");
+$dr= preg_replace("'/$'", "", getenv("DOCUMENT_ROOT"));
 
 include $dr."/lib/db.conf.php";
 include $dr."/lib/mysql.class.php";
@@ -30,16 +30,7 @@ if ($page->get) {
 		$print=true;
 	}
 }
-$color=$elements["color"];
-$hexcolor=$elements["hexcolor"];
 
-$elements["content"] = $parser->format($elements["content"]); 
-
-if ($elements["noNeedNews"]) {
-	$elements["news"]="";
-}
-
-if ($elements["noTitle"]) $elements["contentTitle"]="";
 $year=date("Y");
 
 $config["site_name"]=str_replace(" ", "&nbsp;", $config["site_name"]);

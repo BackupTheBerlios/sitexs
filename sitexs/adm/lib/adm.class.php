@@ -9,7 +9,7 @@ class admin {
 	var $action;
 	
 	function admin () {
-		include_once ("lib/config.inc.php");
+		include_once ("./lib/config.inc.php");
 		session_start();
 		if ($_GET["action"]=="logout") {
 			session_destroy();
@@ -121,8 +121,8 @@ class admin {
 		}
 		$className=$this->nav[$this->id][2];
 		if ($className) {
-			if (file_exists("lib/$className.class.php")) {
-				include_once "lib/$className.class.php";
+			if (file_exists("./lib/$className.class.php")) {
+				include_once "./lib/$className.class.php";
 				$curClass= new $className;
 				
 				$action=$this->action;
@@ -162,7 +162,7 @@ class admin {
 
 	function template ($name, $form4valid="", $validFields="", $root="") {
 	
-		include ($root."lib/config.inc.php");
+		include ($root."./lib/config.inc.php");
 		
 		$file=$root."templates/".trim($name).".php";
 		if (file_exists($root."templates/".trim($name).".php"))
@@ -220,7 +220,7 @@ class admin {
 	}
 
 	function getDocumentRoot () {
-		return "D:\\vhosts\\yarlson.net.ru\\mifs";
+		return preg_replace("'/$'", "", getenv("DOCUMENT_ROOT"));
 	}
 
 	function adminConfig() {

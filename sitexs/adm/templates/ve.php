@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>HTML VisualEd (Визуальный редактор)</title>
+	<title>HTML VisualEd</title>
 <SCRIPT language="JavaScript" type="text/javascript">
 function onLoad() {
 document.FORMPOST.text.value=opener.FORMPOST.elements["$field"].value;

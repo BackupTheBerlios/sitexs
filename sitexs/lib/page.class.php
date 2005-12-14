@@ -17,9 +17,7 @@ class page {
 	}
 
 	function parseURI () {
-		$this->url=parse_url($_SERVER["HTTP_X_REWRITE_URL"]);
-		parse_str($this->url["query"], $q);
-		$this->uri="http://".getenv("SERVER_NAME").$this->url["path"].$q["url"];
+		$this->url=parse_url($this->uri);
 		if ($this->url["path"]!="/") $this->dirs["url"]=explode("/", preg_replace("'^\/|\/$'", "", $this->url["path"]));
 		else $this->dirs["url"][]="index";
 		if ($this->url["query"]) parse_str($this->url["query"], $this->get);
@@ -43,6 +41,7 @@ class page {
 			if ($data["cid"]) $this->dirs["count"]=count($this->dirs["id"]);
 			if (($data["type"] && $data["root"])) break;
 		}
+		if (sizeof($this->dirs["id"])!=sizeof($this->dirs["url"]) || $this->url["query"]) $this->dirty_url=true;
 		$this->id=$data["cid"];
 		$mt=$this->mt;
 		$this->mt=$this->getmicrotime();
@@ -144,7 +143,7 @@ class page {
 
 	function getDocumentRoot () {
 		
-		return "D:\\vhosts\\yarlson.net.ru\\mifs";
+		return preg_replace("'/$'", "", getenv("DOCUMENT_ROOT"));
 		
 	}
 

@@ -12,29 +12,29 @@ $validator
 $message
 <form action="?chid=$chid&action=$action&lid=$lid" method="post" name="FORMPOST"$onsubmit>
 <input name="fields[id]" size="20" value="$data[id]" type="Hidden">
-<p align="center"><input type="button" value="Назад" style="width: auto;" onclick="javascript: history.go(-1);">&nbsp;&nbsp;<input type="submit" value="Сохранить" style="width: auto;"></p>
+<p align="center"><input type="button" value="<?php __("Назад") ?>" style="width: auto;" onclick="javascript: history.go(-1);">&nbsp;&nbsp;<input type="submit" value="<?php __("Сохранить") ?>" style="width: auto;"></p>
 	<table border="0" cellspacing="0" cellpadding="5" width="100%">
 		<tr>
-			<th width="20%">Поле</th>
-			<th width="80%">Значение</th>
+			<th width="20%"><?php __("Поле") ?></th>
+			<th width="80%"><?php __("Значение") ?></th>
 		</tr>
 		<tr>
-			<td>№</td>
+			<td><?php __("№") ?></td>
 			<td><input maxlength="20" name="id" size="20" value="$data[id]" disabled></td>
 		</tr>
 		<tr>
-			<td>Дата</td>
+			<td><?php __("Дата") ?></td>
 			<td><select name="date[day]">$select[day]</select>&nbsp;<select name="date[month]">$select[month]</select>&nbsp;<select name="date[year]">$select[year]</select></td>
 		</tr>
 		<tr>
-			<td><b>Заголовок&nbsp;*</b></td>
-			<td><input maxlength="255" name="fields[title]" size="40" value="$data[title]" title="Заголовок"></td>
+			<td><b><?php __("Заголовок") ?>&nbsp;*</b></td>
+			<td><input maxlength="255" name="fields[title]" size="40" value="$data[title]" title="<?php __("Заголовок") ?>"></td>
 		</tr>
 		<tr id="trText">
-			<td>Текст</td>
-			<td><textarea cols="40" name="fields[text]" rows="20">$data[text]</textarea><br><a href="#" onClick="return showVE('$data[id]', 'fields[text]');">Визуальный редактор</a></td>
+			<td><?php __("Текст") ?></td>
+			<td><textarea cols="40" name="fields[text]" rows="20">$data[text]</textarea><br><a href="#" onClick="return showVE('$data[id]', 'fields[text]');"><?php __("Визуальный редактор") ?></a></td>
 		</tr>
 	</table>
-<p><b>*&nbsp;&mdash; Обязательные поля</b></p>
-<p align="center"><input type="button" value="Назад" style="width: auto;" onclick="javascript: history.go(-1);">&nbsp;&nbsp;<input type="submit" value="Сохранить" style="width: auto;"></p>
+<p><b>*&nbsp;&mdash; <?php __("Обязательные поля") ?></b></p>
+<p align="center"><input type="button" value="<?php __("Назад") ?>" style="width: auto;" onclick="javascript: history.go(-1);">&nbsp;&nbsp;<input type="submit" value="<?php __("Сохранить") ?>" style="width: auto;"></p>
 </form>

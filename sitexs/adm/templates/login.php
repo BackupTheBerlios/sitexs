@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>¬ход в систему</title>
+	<title><?php __("¬ход в систему") ?></title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -13,18 +13,18 @@
 	<td colspan="2" align="center" id="content">
 $message
 <form name="FORMPOST" action="" method="post">
-<p><h2>¬ход&nbsp;в&nbsp;систему</h2></p>
+<p><h2><?php __("¬ход в систему") ?></h2></p>
 <table>
 <tr>
-	<td>Ћогин</td>
+	<td><?php __("Ћогин") ?></td>
 	<td><input type="text" name="user"></td>
 </tr>
 <tr>
-	<td>ѕароль</td>
+	<td><?php __("ѕароль") ?></td>
 	<td><input type="password" name="pass" value=""></td>
 </tr>
 </table>
-<p align="center"><input type="submit" value="¬ход"></p>
+<p align="center"><input type="submit" value="<?php __("¬ход") ?>"></p>
 </form>
 	</td>
 </tr>

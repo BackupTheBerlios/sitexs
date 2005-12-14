@@ -6,7 +6,7 @@ class content {
 	
 	function defaultAction () {
 		global $HTTP_SERVER_VARS;
-		include ("lib/config.inc.php");
+		include ("./lib/config.inc.php");
 		$db= new sql;
 		$db->connect();
 		$result = $db->query('SELECT VERSION() AS version');

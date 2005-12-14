@@ -1,30 +1,16 @@
 <?php
 class elements {
 
-	function elements ($dirs, $dirty_url) {
+	function elements ($dirs) {
 		$this->dirs=$dirs;
-		$this->dirty_url=$dirty_url;
 		
 		$this->db=new sql;
 		$this->db->connect();
 		$res=$this->db->query("select * from chapters where id='".$this->dirs["id"][$this->dirs["count"]-1]."'");
 		$this->properties=$this->db->fetch_array($res);
-		switch ($this->dirs["id"][1]) {
-			case 41:
-	 			$this->color="red";
-			break;
-			case 42:
-	 			$this->color="blue";
-			break;
-			case 43:
-	 			$this->color="yellow";
-			break;
-			default:
-				$this->color="gray";
-			break;
-		}
-		$this->config=page::getConfig();
+		
 	}
+
 
 	function breadCrumbs () {
 		if ($this->properties["id"]!=1 && $this->properties["id"]!=6) {
