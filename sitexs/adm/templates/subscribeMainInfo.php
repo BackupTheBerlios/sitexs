@@ -12,7 +12,7 @@ function showVE(id, field) {
 		<td width="100%" style="padding-left: 0px;"><h3 style="margin: 0px;"><?php __("Списки рассылки") ?></h3></td>
 		<td>
 <ul style="list-style-type: none;font-size: 11px;">
-	<li><a href="?chid=$this->chid"><img src="i/subs_lists.gif" alt="" width="16" height="16" border="0" hspace="5" align="middle"><?php __("Списки") ?>&nbsp;<?php __("рассылки") ?><img src="i/rarr.gif" alt="" hspace="3" align="middle"></a></li>
+	<li><a href="?chid=$this->chid"><img src="i/subs_lists.gif" alt="" width="16" height="16" border="0" hspace="5" align="middle"><?php __("Списки рассылки") ?><img src="i/rarr.gif" alt="" hspace="3" align="middle"></a></li>
 	<li><a href="?chid=$this->chid&action=show_AllUsers"><img src="i/subs_users.gif" alt="" width="16" height="16" border="0" hspace="5" align="middle"><?php __("Подписчики") ?><img src="i/rarr.gif" alt="" hspace="3" align="middle"></a></li>
 </ul></td>
 	</tr>
