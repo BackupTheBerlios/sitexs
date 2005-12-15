@@ -21,12 +21,12 @@ class content {
 				$match = $row[1];
 			}
 		}
-		$MYSQL_VER=$match;
-		$PHP_OS=PHP_OS;
-		$PHP_VERSION=PHP_VERSION;
-		$CMS=$admin_config["name"]." ".$admin_config["version"];
-		$AUTHOR=$admin_config["author"];
-		$HOME_PAGE=$admin_config["home_page"];
+		$this->MYSQL_VER=$match;
+		$this->PHP_OS=PHP_OS;
+		$this->PHP_VERSION=PHP_VERSION;
+		$this->CMS=$admin_config["name"]." ".$admin_config["version"];
+		$this->AUTHOR=$admin_config["author"];
+		$this->HOME_PAGE=$admin_config["home_page"];
 		$content=admin::template("info", $this);
 		$this->elements["content"]=$content;
 	}

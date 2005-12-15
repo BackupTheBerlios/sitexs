@@ -18,8 +18,8 @@ $nav[9]=array(0, "Пользователи", "users", "users.gif", 1);
 
 $admin_config["show_warnings"]=true;
 $admin_config["adm_root"]="adm";
-$admin_config["name"]="SiteExpert";
-$admin_config["version"]="2.0";
+$admin_config["name"]="SiteXS";
+$admin_config["version"]="Pre-Alpha";
 $admin_config["author"]="Yar Kravtsov";
 $admin_config["home_page"]="http://yarlson.net.ru/";
 
