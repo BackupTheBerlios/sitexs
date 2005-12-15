@@ -41,30 +41,29 @@ class page {
 			if ($data["cid"]) $this->dirs["count"]=count($this->dirs["id"]);
 			if (($data["type"] && $data["root"])) break;
 		}
-		if (sizeof($this->dirs["id"])!=sizeof($this->dirs["url"]) || $this->url["query"]) $this->dirty_url=true;
 		$this->id=$data["cid"];
 		$mt=$this->mt;
 		$this->mt=$this->getmicrotime();
 		$this->mta[]=  "<!-- find".($this->mt-$mt)." -->";
 	}
 
-	function elements() {
+	function getElements() {
 		
 		$mt=$this->mt;
 		$this->mt=$this->getmicrotime();
 		$this->mta[]=  "<!-- elements f ".($this->mt-$mt)." -->";
 		include_once ($this->documentRoot."/lib/elements.class.php");
-		$this->elements=new elements($this->dirs);
+		$this->els=new elements($this->dirs);
 		$mt=$this->mt;
 		$this->mt=$this->getmicrotime();
 		$this->mta[]=  "<!-- elements bm1 ".($this->mt-$mt)." -->";
-		$elementsMethods = get_class_methods(get_class($this->elements));
+		$elementsMethods = get_class_methods(get_class($this->els));
 		$mt=$this->mt;
 		$this->mt=$this->getmicrotime();
 		$this->mta[]=  "<!-- elements bm2 ".($this->mt-$mt)." -->";
 		for ($i=1; $i<count($elementsMethods); $i++) {
 			$methodName=$elementsMethods[$i];
-			if (substr($methodName, 0, 1)!="_") $this->elements->$methodName();
+			if (substr($methodName, 0, 1)!="_") $this->els->$methodName();
 		}
 		
 		$moduleId=$this->dirs["type"][count($this->dirs["type"])-1];
@@ -86,7 +85,7 @@ class page {
 			$url=$this->url["path"];
 			$url=preg_replace("'^\/".addslashes($url_before)."'", "", $url);
 			
-			$module=new $data["name"]($url, $this->url["query"], $this->dirs["id"][count($this->dirs["type"])-1], $this->elements->properties);
+			$module=new $data["name"]($url, $this->url["query"], $this->dirs["id"][count($this->dirs["type"])-1], $this->els->properties);
 			$modulesMethods = get_class_methods(get_class($module));
 			
 			for ($i=1; $i<count($modulesMethods); $i++) {
@@ -101,13 +100,14 @@ class page {
 				}
 			}
 			
-			foreach ($this->elements->elements as $key => $value) {
-				if (($key=="contentTitle" || $key=="color" || $key=="hexcolor") && $module->elements[$key])
-					$this->elements->elements[$key]=$module->elements[$key];
+			foreach ($this->els->elements as $key => $value) {
+				if ($key=="contentTitle" && $module->elements[$key])
+					$this->els->elements[$key]=$module->elements[$key];
 				else
-					$this->elements->elements[$key].=$module->elements[$key];
+					$this->els->elements[$key].=$module->elements[$key];
 			}
 		}
+        $this->elements=$this->els->elements;
 		$mt=$this->mt;
 		$this->mt=$this->getmicrotime();
 		$this->mta[]=  "<!-- elements".($this->mt-$mt)." -->";
@@ -141,29 +141,27 @@ class page {
 		}
 	}
 
+    function isMain() {
+        return ($this->id==1 || $this->id==6);
+    }
+
 	function getDocumentRoot () {
 		
 		return preg_replace("'/$'", "", getenv("DOCUMENT_ROOT"));
 		
 	}
 
-	function template ($name, $form4valid="", $validFields="") {
-	
+	function template ($name, &$ref) {
+	    
 		$file=page::getDocumentRoot()."/templates/".trim($name).".php";
-		if (file_exists($file))
-			$template=str_replace("\\'", "'", addslashes(join("", file($file))));
+		if (file_exists($file)) {
+            ob_start();
+			include $file;
+            $template=ob_get_contents();
+            ob_end_clean();
+        }
 		else
 			$template=($admin_config["show_warnings"]) ? addslashes(page::showWarnings("<b>".trim($name).".php</b> - Template is missing!")) : "";
-			
-		if ($form4valid && is_array($validFields)) {
-			include_once (page::getDocumentRoot()."/lib/valid.class.php");
-			$valid=new Validator($form4valid);
-			foreach ($validFields as $key => $value) {
-				$valid->add($key, "", $value);
-			}
-			$template = str_replace(array("\$validator", "\$onsubmit"), array(addslashes($valid->toHTML()), addslashes($valid->onSubmit())), $template);
-		}
-		
 		return $template;
 		
 	}

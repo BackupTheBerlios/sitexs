@@ -75,38 +75,38 @@ class Validator {
             $nam  = $val["NAME"];
             $desc = $val["DESC"];
 
-            $msg .= "  if ( form.$nam ) {\n";
+            $msg .= "  if ( form.elements[\"$nam\"] ) {\n";
 
             switch ( $val["TEST"] ) {
             case "EXISTS":
-                $msg .= "    if ( ! doesExist ( form.$nam.value ) ) {\n";
-                $msg .= "      alert ( \"Поле \\\"\"+form.$nam.title+\"\\\" должно быть заполненным!\" );\n";
-                $msg .= "      form.$nam.focus();\n";
+                $msg .= "    if ( ! doesExist ( form.elements[\"$nam\"].value ) ) {\n";
+                $msg .= "      alert ( \"Поле \\\"\"+form.elements[\"$nam\"].title+\"\\\" должно быть заполненным!\" );\n";
+                $msg .= "      form.elements[\"$nam\"].focus();\n";
                 $msg .= "      return ( false );\n";
                 $msg .= "    }\n";
                 break;
                 
             case "EMAIL":
-                $msg .= "    if ( ! isEmail ( form.$nam.value ) ) {\n";
+                $msg .= "    if ( ! isEmail ( form.elements[\"$nam\"].value ) ) {\n";
                 $msg .= "      alert ( iEmail );\n";
-                $msg .= "      form.$nam.focus();\n";
+                $msg .= "      form.elements[\"$nam\"].focus();\n";
                 $msg .= "      return ( false );\n";
                 $msg .= "    }\n";
                 break;
                 
             case "EQUAL":
                 $nam2 = $val["XTRA"];
-                $msg .= "    if ( form.$nam.value != form.$nam2.value ) {\n";
-                $msg .= "      alert ( \"$desc\" );\n";
-                $msg .= "      form.$nam.focus();\n";
+                $msg .= "    if ( form.elements[\"$nam\"].value != form.elements[\"$nam2\"].value ) {\n";
+                $msg .= "      alert ( \"Поле \\\"\"+form.elements[\"$nam\"].title+\"\\\" должно быть равно полю \\\"\"+form.elements[\"$nam2\"].title+\"\\\"!\" );\n";
+                $msg .= "      form.elements[\"$nam\"].focus();\n";
                 $msg .= "      return ( false );\n";
                 $msg .= "    }\n";
                 break;
                 
             case "COPY":
                 $nam2 = $val["XTRA"];
-                $msg .= "    if ( ! doesExist ( form.$nam2.value ) ) {\n";
-                $msg .= "      form.$nam2.value = form.$nam.value\n";
+                $msg .= "    if ( ! doesExist ( form.elements[\"$nam2\"].value ) ) {\n";
+                $msg .= "      form.elements[\"$nam2\"].value = form.elements[\"$nam\"].value\n";
                 $msg .= "    }\n";
                 break;
             }
