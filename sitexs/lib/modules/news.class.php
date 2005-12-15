@@ -3,14 +3,14 @@ class news {
 
 	function news ($url, $query, $id) {
 		$this->db=new sql;
-		$this->url=preg_replace("'/$'", "", $url);
+		$this->url=$url;
 		$this->ruMonths=array("1"=>"€нварь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сент€брь", "окт€брь", "но€брь", "декабрь");
 		if ($this->url) {
 			$this->dirs=explode("/", preg_replace("'^\/|\/$'", "", $url));
 		}
 	}
 
-	/*function leftBar() {
+	function leftBar() {
 		$this->db=new sql;
 		$this->db->connect();
 		$this->elements["leftBar"].=$this->_tree($this->id, "");
@@ -34,29 +34,32 @@ class news {
 		}
 		if ($tree) $tree="<ul id=\"date\">$tree</ul>";
 		return $tree;
-	}*/
+	}
 
 	function content() {
-		if ($this->url && is_numeric($this->url)) {
+		if ($this->url) {
 			$this->db->connect();
-			$res=$this->db->query("select * from news where id=".$this->url);
-			$data=$this->db->fetch_array($res);
-			$data["date"]=date("d.m.Y", $data["time"]);
-			$this->properties=$data;
-			$this->elements["content"].=$data["text"]."<br><br>";
+			if ($this->dirs[1]) $where=" and DATE_FORMAT(FROM_UNIXTIME(time),\"%c\")='".$this->dirs[1]."'";
+			$res=$this->db->query("select *, DATE_FORMAT(FROM_UNIXTIME(time),\"%Y\") as year, DATE_FORMAT(FROM_UNIXTIME(time),\"%c\") as month from news where DATE_FORMAT(FROM_UNIXTIME(time),\"%Y\")='".$this->dirs[0]."'$where");
+			while ($data=$this->db->fetch_array($res)) {
+				$this->elements["content"].="<p style=\"margin-bottom: 0.5em;\"><span class=\"date\">&nbsp;&nbsp;".date("d.m.Y", $data["time"])."&nbsp;&nbsp;</span>&nbsp; <b>".$data["title"]."</b></p>\n".$data["text"];
+				$data1=$data;
+			}
+			$this->properties["year"]=$data1["year"];
+			if ($this->dirs[1]) {
+				$this->properties["month"]=$data1["month"];
+				$this->properties["ruMonth"]=$this->ruMonths[$data1["month"]];
+			}
 		}
 		else {
 			$this->db->connect();
-			$res=$this->db->query("select * from news order by time desc");
-			$this->elements["content"]="<br><br>";
+			$res=$this->db->query("select * from news order by time desc limit 0,5");
 			while ($data=$this->db->fetch_array($res)) {
-				$d=date("d", $data["time"]);
-				$m=date("m", $data["time"]);
-				$y=date("Y", $data["time"]);
-				$this->elements["content"].="<table cellspacing=\"0\" cellpadding=\"2\"><tr><td class=\"d\">$d</td><td class=\"m\">$m</td><td class=\"y\">$y</td></tr></table><a id =\"$data[id]\" href=\"\"></a><h5 style=\"margin-bottom: 0.5em;\">".$data["title"]."</h5>".$data["text"]."\n";
+				$data["date"]=date("d.m.Y", $data["time"]);
+				$this->elements["content"].="<p style=\"margin-bottom: 0.5em;\"><span class=\"date\">&nbsp;&nbsp;".date("d.m.Y", $data["time"])."&nbsp;&nbsp;</span>&nbsp; <b>".$data["title"]."</b></p>\n".$data["text"]."<br><br>";
 			}
 		}
-
+		$this->elements["content"]="<table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\">".$this->elements["leftBar"]."<td width=\"80%\" style=\"padding-top: 0.5em;\" valign=\"top\">".$this->elements["content"]."</td></table>";
 	}
 
 
@@ -67,20 +70,11 @@ class news {
 	}
 
 	function contentTitle() {
-		if ($this->dirs[0]) {
-			$d=date("d", $this->properties["time"]);
-			$m=date("m", $this->properties["time"]);
-			$y=date("Y", $this->properties["time"]);
-			$this->elements["contentTitle"]="<p style=\"margin-bottom: 0.5em;\"><h2>".$this->properties["title"]."</h2></p>\n<div align=\"right\"><table cellspacing=\"0\" cellpadding=\"2\"><tr><td class=\"d\">$d</td><td class=\"m\">$m</td><td class=\"y\">$y</td></tr></table></div>";
-		}
+		if ($this->dirs[0]) $this->elements["contentTitle"]="<h2>".$this->properties["year"].(($this->properties["month"]) ? " ".$this->properties["ruMonth"] : "")."</h2>";
 	}
 
 	function _error404() {
-		return ((!is_numeric($this->url) && $this->url) || count($this->dirs)>2) ? true : false;
-	}
-
-	function noNeedNews () {
-		$this->elements["noNeedNews"]=true;
+		return ((count($this->properties)<1 && $this->url) || count($this->dirs)>2) ? true : false;
 	}
 
 }

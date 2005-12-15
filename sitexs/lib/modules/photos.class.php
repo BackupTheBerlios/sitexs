@@ -11,8 +11,6 @@ class photos {
 		 while($data=$this->db->fetch_array($res)) {
 		 	$this->elements["content"].="<a href=\"$data[url]/\">$data[title]</a>";
 		 }
-		}
-
 	}
 }
 ?>

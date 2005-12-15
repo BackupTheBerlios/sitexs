@@ -1,1 +1,0 @@
-<tr><td valign="top" width="30%">$data[descr]</td><td width="70%"><textarea name="$data[name]" cols="50" rows="5" style="width: 100%;">$data[text]</textarea></td></tr>

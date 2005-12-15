@@ -11,17 +11,18 @@ class elements {
 		
 	}
 
-
 	function breadCrumbs () {
 		if ($this->properties["id"]!=1 && $this->properties["id"]!=6) {
-			$this->elements["breadCrumbs"]="";
+			$this->elements["breadCrumbs"]="<a href=\"/intro/\"><img src=\"/i/home.gif\" alt=\"\" width=22 height=20 border=0 vspace=5 hspace=5 align=\"absmiddle\">Сетевое &laquo;Я&raquo; Ярослава Кравцова</a>";
 			$count=($this->dirs["root"] && count($this->dirs["url"])!=count($this->dirs["id"])) ? $this->dirs["count"] : $this->dirs["count"]-1;
 			for ($i=0; $i<$count; $i++) {
 				$url.=$this->dirs["url"][$i]."/";
-				$this->elements["breadCrumbs"].="&nbsp;/&nbsp;<a href=\"/".$url."\">".$this->dirs["title"][$i]."</a>";
+				$this->elements["breadCrumbs"].="&nbsp;<img src=\"/i/rarr.gif\" alt=\"\" width=\"9\" height=\"20\" border=\"0\" align=\"absmiddle\">&nbsp;<a href=\"/".$url."\">".$this->dirs["title"][$i]."</a>";
 			}
-			if (!($this->dirs["root"] && count($this->dirs["url"])!=count($this->dirs["id"]))) $this->elements["breadCrumbs"].="&nbsp;/ ".$this->dirs["title"][$this->dirs["count"]-1];
-			$this->elements["breadCrumbs"]="<a href=\"/\">Главная</a>".$this->elements["breadCrumbs"];
+			//if (!($this->dirs["root"] && count($this->dirs["url"])!=count($this->dirs["id"]))) $this->elements["breadCrumbs"].=$this->dirs["title"][$this->dirs["count"]-1];
+		}
+		else {
+			$this->elements["breadCrumbs"]="<img src=\"/i/dot.gif\" alt=\"\" width=\"1\" height=\"30\" border=\"0\">";
 		}
 	}
 
@@ -34,10 +35,8 @@ class elements {
 		$this->mt=$this->getmicrotime();
 		$this->mta[]=  "<!-- b menu".($this->mt-$mt)." -->";
 		$res=$this->db->query("select * from menus order by id");
-		$pics=array(35=>"cond", 40=>"who", 45=>"jury", 50=>"winners");
 		while ($menus=$this->db->fetch_array($res)) {
-			$men=($menus["id"]==3) ? 1 : $menus["id"];
-			$res1=$this->db->query("select title, url, id from chapters where pid=0 and menu=".$men." order by sortorder");
+			$res1=$this->db->query("select title, url, id from chapters where pid=0 and menu=".$menus["id"]." order by sortorder");
 			while($data=$this->db->fetch_array($res1)) {
 				
 				$i++;
@@ -56,14 +55,6 @@ class elements {
 				else {
 					$tpl="";
 				}
-				if ($pics[$data["id"]] && $menus["id"]==1) {
-					$picFile="/i/menu-".$pics[$data["id"]]."-".$this->color.".gif";
-					$picFileSel="/i/menu-".$pics[$data["id"]]."-".$this->color."-sel.gif";
-					$sz=getimagesize(page::getDocumentRoot().$picFile);
-					$data["title"]="<img src=\"$picFile\" alt=\"\" $sz[3] border=\"0\">";
-					$data["titlesel"]="<img src=\"$picFileSel\" alt=\"\" $sz[3] border=\"0\">";
-				}
-				if ($this->dirty_url && $data["id"]==$this->dirs["id"][$this->dirs["count"]-1]) $tpl="open";
 				eval('$menuNodes.="'.page::escapeText($menus[$tpl."node_tpl"]).'";');
 				
 			}
@@ -85,7 +76,7 @@ class elements {
 	}
 
 	function contentTitle() {
-		if ($this->properties["id"]>1) $this->elements["contentTitle"]="<h2>".$this->properties["title"]."</h2>";
+		if ($this->properties["id"]>1) $this->elements["contentTitle"]="<h1>".$this->properties["title"]."</h1>";
 	}
 
 	function title() {
@@ -96,79 +87,36 @@ class elements {
 		if ($this->properties["subtitle"]) $this->elements["contentSubTitle"]="<h1>".$this->properties["subtitle"]."</h1>";
 	}
 
+	function authors() {
+		$this->elements["authors"]="";
+	}
+
+	function style () {
+		if (file_exists(page::getDocumentRoot()."/images/bottom/w".$this->properties["id"].".gif")) {
+			$this->elements["style1"]="background: url(/images/bottom/w".$this->properties["id"].".gif) bottom right no-repeat;";
+			$this->elements["style2"]=" url(/images/bottom/w".$this->properties["id"].".gif) bottom right no-repeat";
+		}
+		if (file_exists(page::getDocumentRoot()."/images/bottom/w".$this->properties["id"]."_.gif")) {
+			$this->elements["style3"]=" style=\"background: url(/images/bottom/w".$this->properties["id"]."_.gif) bottom right no-repeat;\"";
+		}
+	}
+
 	function time() {
 		$this->elements["time"]="";
+	}
+
+	function keywords() {
+		$this->elements["keywords"]=$this->properties["keywords"];
+	}
+
+	function description() {
+		$this->elements["description"]=$this->properties["description"];
 	}
 
 	function getmicrotime(){ 
     list($usec, $sec) = explode(" ",microtime()); 
     return ((float)$usec + (float)$sec); 
   }
-
-  function news() {
-  		$db=new sql;
-		$db->connect();
-		$res=$db->query("select * from news order by time desc limit 0,5");
-		while ($data=$db->fetch_array($res)) {
-			$data["date"]=date("d.m.Y", $data["time"]);
-			$news.="\t<li><strong>$data[date]</strong> | <a href=\"/news/#$data[id]\">$data[title]</a></li>\n";
-		}
-		if ($news) $news="<ul>\n$news</ul>";
-		$this->elements["news"]='
-		<table width="100%" cellspacing="0" cellpadding="0">
-		<tr>
-				<td id="news">
-				<img src="/i/dot.gif" alt="" width="1" height="20" border="0">
-				<a href="/news/"><img src="/i/news-logo-'.$this->color.'.gif" alt="" width="64" height="50" border="0"><img src="/i/news-title.gif" alt="" width="113" height="50" border="0"></a>'.$news.'</td>
-			</tr>
-					</table>';
-  }
- 
-  function logo() {
-  	$this->elements["logo"]="";
-  }
-
-  function noNeedNews () {
-  	$this->elements["noNeedNews"]=false;
-  }
- 
- function meta() {
- 	$this->elements["keywords"]=$this->properties["keywords"];
- 	$this->elements["description"]=$this->properties["description"];
- }
-
- function color () {
- 	$this->elements["color"]="gray";
- }
-
- function hexcolor () {
-	$this->elements["hexcolor"]="#40506a";
- }
-
- function noTitle () {
- 	$this->elements["noTitle"]=false;
- }
-
- function genpartner () {
- 	if ($this->config["genpartner"]) {
-		$genpartner=$this->config["genpartner"];
-		eval('$genpartner="'.page::template("modules/genpartner").'";');
-		$this->elements["genpartner"]=$genpartner;
-	}
-	else
-	 	$this->elements["genpartner"]="";
- }
-
- function partners () {
- 	$color=$this->color;
- 	if ($this->config["partners"]) {
-		$partners=$this->config["partners"];
-		eval('$partners="'.page::template("modules/partners").'";');
-		$this->elements["partners"]=$partners;
-	}
-	else
-	 	$this->elements["partners"]="";
- }
 
 }
 ?>

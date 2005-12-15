@@ -1,1 +1,0 @@
-<li id="current">$name</li>

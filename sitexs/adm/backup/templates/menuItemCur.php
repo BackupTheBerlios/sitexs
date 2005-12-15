@@ -1,1 +1,0 @@
-<li id="current"><a href="?chid=$i">$name</a></li>
