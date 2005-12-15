@@ -67,13 +67,13 @@ document.onmousedown=selectmouse;
 document.onmouseup=removemouse;
 
 function submit_delete()	{
-	return confirm('<?php __("Удалить выбранную запись") ?>?');
+	return confirm('<?php echo __("Удалить выбранную запись") ?>?');
 }
 </script>
-<p><a href="?chid=$chid&action=add&pid=0&level=1&lid=$lid"><img src="i/add.gif" alt="<?php __("Добавить") ?>" width="16" height="16" border="0" hspace="3" align="absmiddle"><?php __("Добавить") ?></a></p>
+<p><a href="?chid=$chid&action=add&pid=0&level=1&lid=$lid"><img src="i/add.gif" alt="<?php echo __("Добавить") ?>" width="16" height="16" border="0" hspace="3" align="absmiddle"><?php echo __("Добавить") ?></a></p>
 <table width="100%">
 <tr>
-	<th width="80%"><?php __("Название") ?></th><th width="10%"><?php __("Размер") ?></th><th width="10%"></th><th><?php __("Действие") ?></th>
+	<th width="80%"><?php echo __("Название") ?></th><th width="10%"><?php echo __("Размер") ?></th><th width="10%"></th><th><?php echo __("Действие") ?></th>
 </tr>
 $content
 </table>

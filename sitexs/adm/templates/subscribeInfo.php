@@ -15,26 +15,26 @@ $this->navBar
 <input name="fields[id]" size="20" value="$data[id]" type="Hidden">
 	<table border="0" cellspacing="0" cellpadding="5" width="100%">
 		<tr>
-			<th width="20%"><?php __("Поле") ?></th>
-			<th width="80%"><?php __("Значение") ?></th>
+			<th width="20%"><?php echo __("Поле") ?></th>
+			<th width="80%"><?php echo __("Значение") ?></th>
 		</tr>
 		<tr>
-			<td><?php __("№") ?></td>
+			<td><?php echo __("№") ?></td>
 			<td><input maxlength="20" name="id" size="20" value="$data[id]" disabled></td>
 		</tr>
 		<tr>
-			<td><b><?php __("Заголовок") ?>&nbsp;*</b></td>
-			<td><input maxlength="255" name="fields[title]" size="40" value="$data[title]" title="<?php __("Заголовок") ?>"></td>
+			<td><b><?php echo __("Заголовок") ?>&nbsp;*</b></td>
+			<td><input maxlength="255" name="fields[title]" size="40" value="$data[title]" title="<?php echo __("Заголовок") ?>"></td>
 		</tr>
 		<tr>
-			<td><?php __("Период") ?></td>
+			<td><?php echo __("Период") ?></td>
 			<td><input maxlength="255" name="fields[period]" size="40" value="$data[period]"></td>
 		</tr>
 		<tr>
-			<td><?php __("Описание") ?></td>
-			<td><textarea cols="40" name="fields[description]" rows="20">$data[description]</textarea><br><a href="#" onClick="return showVE('$data[id]', 'fields[description]');"><?php __("Визуальный редактор") ?></a></td>
+			<td><?php echo __("Описание") ?></td>
+			<td><textarea cols="40" name="fields[description]" rows="20">$data[description]</textarea><br><a href="#" onClick="return showVE('$data[id]', 'fields[description]');"><?php echo __("Визуальный редактор") ?></a></td>
 		</tr>
 	</table>
-<p><b>*&nbsp;&mdash; <?php __("Обязательные поля") ?></b></p>
-<p align="center"><input type="button" value="<?php __("Назад") ?>" style="width: auto;" onclick="javascript: history.go(-1);">&nbsp;&nbsp;<input type="submit" value="<?php __("Сохранить") ?>" style="width: auto;"></p>
+<p><b>*&nbsp;&mdash; <?php echo __("Обязательные поля") ?></b></p>
+<p align="center"><input type="button" value="<?php echo __("Назад") ?>" style="width: auto;" onclick="javascript: history.go(-1);">&nbsp;&nbsp;<input type="submit" value="<?php echo __("Сохранить") ?>" style="width: auto;"></p>
 </form>
