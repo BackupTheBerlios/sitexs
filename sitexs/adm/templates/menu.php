@@ -1,3 +1,3 @@
 <ul>
-$menu
+<?php echo $ref->menu ?>
 </ul>

@@ -13,19 +13,19 @@
 <table cellspacing="0" cellpadding="5" width="100%">
 <tr>
 	<td><img src="i/logo.gif" alt="" width="168" height="35" border="0"></td>
-	<td id="login" align="right"><?php __("Текущий пользователь") ?>: <strong><a href="?chid=9&action=edit&id=$this->user_id">$this->user</a></strong>&nbsp; &nbsp;<a href="?action=logout" style="font-size: 11px;"><img src="i/logout.gif" alt="" width="16" height="16" hspace="6" border="0" align="absmiddle"><?php __("Выйти из системы") ?></a></td>
+	<td id="login" align="right"><?php echo __("Текущий пользователь") ?>: <strong><a href="?chid=9&action=edit&id=$this->user_id"><?php echo $ref->user ?></a></strong>&nbsp; &nbsp;<a href="?action=logout" style="font-size: 11px;"><img src="i/logout.gif" alt="" width="16" height="16" hspace="6" border="0" align="absmiddle"><?php echo __("Выйти из системы") ?></a></td>
 </tr>
 </table>
 	</td>
 </tr>
 <tr>
-	<td colspan="2" style="padding: 0px;"><div id="menu">$menu</div></td>
+	<td colspan="2" style="padding: 0px;"><div id="menu"><?php echo $ref->elements["menu"] ?></div></td>
 </tr>
 <tr>
-	<td valign="top" id="subMenu"><div>$subMenu</div></td>
+	<td valign="top" id="subMenu"><div><?php echo $ref->elements["subMenu"] ?></div></td>
 	<td id="content" valign="top" style="height: 100%;" width="100%">
-<p>$title</p>
-$content
+<p><?php echo $ref->elements["title"] ?></p>
+<?php echo $ref->content ?>
 	</td>
 </tr>
 </table>

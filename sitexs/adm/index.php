@@ -1,4 +1,8 @@
 <?php
+$dr=preg_replace("'/$'", "", getenv("DOCUMENT_ROOT"));
+include $dr."/lib/streams.php";
+include $dr."/lib/gettext.php";
+include $dr."/lib/l10n.php";
 include_once "lib/adm.class.php";
 $admin=new admin();
 $GLOBALS['now'] = gmdate('D, d M Y H:i:s') . ' GMT';

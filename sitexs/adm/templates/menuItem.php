@@ -1,1 +1,1 @@
-<li><a href="?chid=$i">$name</a></li>
+<li><a href="?chid=<?php echo $ref->i ?>"><?php echo $ref->nameI ?></a></li>

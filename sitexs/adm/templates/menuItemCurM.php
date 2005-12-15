@@ -1,1 +1,1 @@
-<li id="current">$name</li>
+<li id="current"><?php echo $ref->nameI ?></li>

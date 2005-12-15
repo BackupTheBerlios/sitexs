@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title><?php __("Âõîä â ñèñòåìó") ?></title>
+	<title><?php echo __("Âõîä â ñèñòåìó") ?></title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -11,20 +11,20 @@
 <table cellspacing="0" cellpadding="5" width="100%" style="height: 100%;">
 <tr>
 	<td colspan="2" align="center" id="content">
-$message
+<?php echo $ref->message ?>
 <form name="FORMPOST" action="" method="post">
-<p><h2><?php __("Âõîä â ñèñòåìó") ?></h2></p>
+<p><h2><?php echo __("Âõîä â ñèñòåìó") ?></h2></p>
 <table>
 <tr>
-	<td><?php __("Ëîãèí") ?></td>
+	<td><?php echo __("Ëîãèí") ?></td>
 	<td><input type="text" name="user"></td>
 </tr>
 <tr>
-	<td><?php __("Ïàğîëü") ?></td>
+	<td><?php echo __("Ïàğîëü") ?></td>
 	<td><input type="password" name="pass" value=""></td>
 </tr>
 </table>
-<p align="center"><input type="submit" value="<?php __("Âõîä") ?>"></p>
+<p align="center"><input type="submit" value="<?php echo __("Âõîä") ?>"></p>
 </form>
 	</td>
 </tr>

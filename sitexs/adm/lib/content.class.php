@@ -27,16 +27,8 @@ class content {
 		$CMS=$admin_config["name"]." ".$admin_config["version"];
 		$AUTHOR=$admin_config["author"];
 		$HOME_PAGE=$admin_config["home_page"];
-		eval('$content="'.admin::template("info").'";');
+		$content=admin::template("info", $this);
 		$this->elements["content"]=$content;
-	}
-
-	function setMenu () {
-		$this->elements["menu"]=array(
-			array("Разделы и документы", "item"),
-			array("Изображения", "images"),
-			array("Файлы", "files"),
-			array("Внутренние шаблоны", "templates"));
 	}
 
 }

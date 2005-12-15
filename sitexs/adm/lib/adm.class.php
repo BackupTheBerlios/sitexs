@@ -26,14 +26,14 @@ class admin {
 					header("Location: ./");
 				}
 				else {
-					$message="<h3 style=\"color: red;\">Неправильный логин или пароль!!!</h3>";
-					eval('$login="'.$this->template("login").'";');
+					$this->message="<h3 style=\"color: red;\">Неправильный логин или пароль!!!</h3>";
+					$login=$page->template("login", $this);
 					echo $login;
 					exit;
 				}
 			}
 			else {
-				eval('$login="'.$this->template("login").'";');
+				$login=$this->template("login", $this);
 				echo $login;
 				exit;
 			}
@@ -57,54 +57,36 @@ class admin {
 	function setMenu ($id=0) {
 		
 		for ($i=1; $i<=count($this->nav); $i++) {
+			$this->i=$i;
 			if ($this->nav[$i][0]==$id) {
 				if (!$this->nav[$i][4] || ($this->nav[$i][4] && $this->user_admin)) {
 					$im = ($this->nav[$i][3]) ? $this->nav[$i][3] : "dot.gif";
-					$name="<img src=\"i/".$im."\" alt=\"\" border=\"0\" align=\"absmiddle\" hspace=\"6\" width=\"16\" height=\"16\">".$this->nav[$i][1];
+					$this->nameI="<img src=\"i/".$im."\" alt=\"\" border=\"0\" align=\"absmiddle\" hspace=\"6\" width=\"16\" height=\"16\">".$this->nav[$i][1];
 					if ($i==$this->id && !$this->action) {
-						eval('$menu.="'.$this->template("menuItemCurM").'";');
+						$menu.=$this->template("menuItemCurM", $this);
 					}
 					elseif ($i==$this->nav[$this->id][0] || ($i==$this->id && $this->action)) {
-						eval('$menu.="'.$this->template("menuItemCur").'";');
+						$menu.=$this->template("menuItemCur", $this);
 					}
 					else {
-						eval('$menu.="'.$this->template("menuItem").'";');
+						$menu.=$this->template("menuItem", $this);
 					}
 				}
 			}
 		}
 		if ($menu) {
-			eval('$menu="'.$this->template("menu").'";');
+			$this->menu=$menu;
+			$menu=$this->template("menu", $this);
 		}
 		if ($id)
 			$this->elements["subMenu"]=$menu;
 		else
 			$this->elements["menu"]=$menu;
-		
 	}
 
 	function setTitle () {
 		
 		$this->elements["title"]="<h2><nobr>".$this->nav[$this->id][1]."</nobr></h2>";
-		
-	}
-
-	function setBreadCrumbs () {
-		
-		if (!$this->id)
-			$bn="Главная";
-		elseif ($this->nav[$this->id][0]==0)
-			if (!$this->action)
-				$bn=$this->nav[$this->id][1];
-			else
-				$bn='<a href="?id='.$this->id.'">'.$this->nav[$this->id][1].'</a>';
-		else
-			if (!$this->action)
-				$bn='<a href="?chid='.$this->nav[$this->id][0].'">'.$this->nav[$this->nav[$this->id][0]][1].'</a> / '.$this->nav[$this->id][1];
-			else
-				$bn='<a href="?chid='.$this->nav[$this->id][0].'">'.$this->nav[$this->nav[$this->id][0]][1].'</a> / <a href="?chid='.$this->id.'">'.$this->nav[$this->id][1].'</a>';
-			
-		$this->elements["bn"]=$bn;
 		
 	}
 
@@ -115,8 +97,6 @@ class admin {
 			$id=$this->id;
 			$id=($this->nav[$id][0]==0) ? $id : $this->nav[$id][0];
 			$this->setMenu($id);
-			
-			$this->setBreadCrumbs();
 			$this->setTitle();
 		}
 		$className=$this->nav[$this->id][2];
@@ -130,60 +110,45 @@ class admin {
 					if (method_exists($curClass, $action))
 						$curClass->$action();
 					elseif ($this->admin_config["show_warnings"])
-						$warnings.="<p>There is no method <b>$action</b> in class <b>$className</b></p>";
+						$this->warnings.="<p>There is no method <b>$action</b> in class <b>$className</b></p>";
 				}
 				else {
 					if (method_exists($curClass, "defaultAction"))
 						$curClass->defaultAction();
 					elseif ($this->admin_config["show_warnings"])
-						$warnings.="<p>There is no method <b>defaultAction</b> in class <b>$className</b></p>";
+						$this->warnings.="<p>There is no method <b>defaultAction</b> in class <b>$className</b></p>";
 				}
 			}
 			else
-				$warnings.=($this->admin_config["show_warnings"]) ? "<b>$className.class.php</b> - Class difinition file is missing!" : "";
+				$this->warnings.=($this->admin_config["show_warnings"]) ? "<b>$className.class.php</b> - Class difinition file is missing!" : "";
 
 		}
 		if (is_array($curClass->elements)) extract($curClass->elements);
-		$warnings.=$_SESSION["warning"];
+		$this->warnings.=$_SESSION["warning"];
 		if ($_GET["w"]) {
 			$_SESSION["warning"]="";
 			$_SESSION["old_data"]="";
 		}
-		if ($warnings) $warnings=$this->showWarnings($warnings);
-		$content=$warnings.$content;
+		if ($this->warnings) $this->warnings=$this->showWarnings($this->warnings);
+		$this->content=$this->warnings.$content;
 		if (!$g) {
-			extract($this->elements);
-			eval('$main="'.$this->template("main").'";');
+			$main=$this->template("main", $this);
 		}
-		else $main=$content;
+		else $main=$this->content;
 		return $main;
 		
 	}
 
-	function template ($name, $form4valid="", $validFields="", $root="") {
-	
-		include ($root."./lib/config.inc.php");
-		
-		$file=$root."templates/".trim($name).".php";
-		if (file_exists($root."templates/".trim($name).".php"))
-			$template=str_replace("\\'", "'", addslashes(join("", file($file))));
+	function template ($name, &$ref) {
+	    $file=admin::getDocumentRoot()."/adm/templates/".trim($name).".php";
+		if (file_exists($file)) {
+            ob_start();
+			include $file;
+            $template=ob_get_contents();
+            ob_end_clean();
+        }
 		else
-			$template=($admin_config["show_warnings"]) ? addslashes(admin::showWarnings("<b>".trim($name).".php</b> - Template is missing!")) : "";
-			
-		if ($form4valid && is_array($validFields)) {
-			include_once (admin::getDocumentRoot()."/".$admin_config["adm_root"]."/lib/valid.class.php");
-			$valid=new Validator($form4valid);
-			foreach ($validFields as $key => $value) {
-				if (preg_match("'^EQUAL'", $value)) {
-					$valid->add($key, "", "EQUAL", trim(preg_replace("'^EQUAL'","", $value)));
-				}
-				else {
-					$valid->add($key, "", $value);
-				}
-			}
-			$template = str_replace(array("\$validator", "\$onsubmit"), array(addslashes($valid->toHTML()), addslashes($valid->onSubmit())), $template);
-		}
-		
+			$template=($admin_config["show_warnings"]) ? addslashes(page::showWarnings("<b>".trim($name).".php</b> - Template is missing!")) : "";
 		return $template;
 		
 	}
@@ -204,7 +169,7 @@ class admin {
 	}
 
 	function getTypeID ($typeName) {
-		include "lib/config.inc.php";
+		include "./lib/config.inc.php";
 		foreach ($nav as $key => $value) {
 			if ($value[2]==$typeName) return $key;
 		}
@@ -224,7 +189,7 @@ class admin {
 	}
 
 	function adminConfig() {
-		include "lib/config.inc.php";
+		include "./lib/config.inc.php";
 		return $admin_config;
 	}
 
